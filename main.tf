@@ -70,7 +70,7 @@ module "monitor_cpu_usage" {
   name               = "${var.cpu_usage_name != "" ? 
                         "${var.cpu_usage_name}" : 
                         "${var.product_domain} - ${var.cluster} - ${var.environment} - CPU Usage is High on Task: {{ task_arn }}"}"
-  query              = "avg:ecs.fargate.cpu.percent{cluster:${var.cluster}} by {task_arn} >= ${var.cpu_usage_thresholds["critical"]}"
+  query              = "avg(last_5m):ecs.fargate.cpu.percent{cluster:${var.cluster}} by {task_arn} >= ${var.cpu_usage_thresholds["critical"]}"
   thresholds         = "${var.cpu_usage_thresholds}"
   message            = "${var.cpu_usage_message}"
   escalation_message = "${var.cpu_usage_escalation_message}"
