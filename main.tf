@@ -57,30 +57,30 @@ resource "datadog_timeboard" "system" {
   }
 }
 
-# module "monitor_cpu_usage" {
-#   source  = "github.com/traveloka/terraform-datadog-monitor"
-#   enabled = "${local.monitor_enabled}"
+module "monitor_cpu_usage" {
+  source  = "github.com/traveloka/terraform-datadog-monitor"
+  enabled = "${local.monitor_enabled}"
 
-#   product_domain = "${var.product_domain}"
-#   service        = "${var.service}"
-#   environment    = "${var.environment}"
-#   tags           = "${var.tags}"
-#   timeboard_id   = "${join(",", datadog_timeboard.system.*.id)}"
+  product_domain = "${var.product_domain}"
+  service        = "${var.service}"
+  environment    = "${var.environment}"
+  tags           = "${var.tags}"
+  timeboard_id   = "${join(",", datadog_timeboard.system.*.id)}"
 
-#   name               = "${var.cpu_usage_name != "" ? 
-#                         "${var.cpu_usage_name}" : 
-#                         "${var.product_domain} - ${var.cluster} - ${var.environment} - CPU Usage is High on Task: {{ task_arn }}"}"
-#   query              = "avg:ecs.fargate.cpu.percent{cluster:${var.cluster}, environment:${var.environment}} by {task_arn} >= ${var.cpu_usage_thresholds["critical"]}"
-#   thresholds         = "${var.cpu_usage_thresholds}"
-#   message            = "${var.cpu_usage_message}"
-#   escalation_message = "${var.cpu_usage_escalation_message}"
+  name               = "${var.cpu_usage_name != "" ? 
+                        "${var.cpu_usage_name}" : 
+                        "${var.product_domain} - ${var.cluster} - ${var.environment} - CPU Usage is High on Task: {{ task_arn }}"}"
+  query              = "avg:ecs.fargate.cpu.percent{cluster:${var.cluster}} by {task_arn} >= ${var.cpu_usage_thresholds["critical"]}"
+  thresholds         = "${var.cpu_usage_thresholds}"
+  message            = "${var.cpu_usage_message}"
+  escalation_message = "${var.cpu_usage_escalation_message}"
 
-#   recipients         = "${var.recipients}"
-#   alert_recipients   = "${var.alert_recipients}"
-#   warning_recipients = "${var.warning_recipients}"
+  recipients         = "${var.recipients}"
+  alert_recipients   = "${var.alert_recipients}"
+  warning_recipients = "${var.warning_recipients}"
 
-#   renotify_interval = "${var.renotify_interval}"
-#   notify_audit      = "${var.notify_audit}"
-#   include_tags      = "${var.cpu_usage_include_tags}"
-# }
+  renotify_interval = "${var.renotify_interval}"
+  notify_audit      = "${var.notify_audit}"
+  include_tags      = "${var.cpu_usage_include_tags}"
+}
 
